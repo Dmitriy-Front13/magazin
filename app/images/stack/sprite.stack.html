@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>SVG stack preview | svg-sprite</title>
+        <style>
+            body {
+                padding: 0;
+                margin: 0;
+                color: #666;
+                background: #fafafa;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 1em;
+                line-height: 1.4;
+            }
+
+            header {
+                display: block;
+                padding: 3em 3em 2em;
+                background-color: #fff;
+            }
+
+            header p {
+                margin: 2em 0 0;
+            }
+
+            section {
+                border-top: 1px solid #eee;
+                padding: 2em 3em 0;
+            }
+
+            section ul {
+                margin: 0;
+                padding: 0;
+            }
+
+            section li {
+                display: inline-block;
+                background-color: #fff;
+                position: relative;
+                margin: 0 2em 2em 0;
+                vertical-align: top;
+                border: 1px solid #ccc;
+                padding: 1em 1em 3em;
+                cursor: default;
+            }
+
+            .icon-box {
+                margin: 0;
+                width: 144px;
+                height: 144px;
+                position: relative;
+                background: #ccc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath fill='%23fff' d='M6 0h6v6H6zM0 6h6v6H0z'/%3E%3C/svg%3E") top left repeat;
+                border: 1px solid #ccc;
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
+
+            .icon {
+                display: inline-block;
+            }
+
+            h1 {
+                margin-top: 0;
+            }
+
+            h2 {
+                margin: 0;
+                padding: 0;
+                font-size: 1em;
+                font-weight: 400;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                position: absolute;
+                left: 1em;
+                right: 1em;
+                bottom: 1em;
+            }
+
+            footer {
+                display: block;
+                margin: 0;
+                padding: 0 3em 3em;
+            }
+
+            footer p {
+                margin: 0;
+                font-size: .7em;
+            }
+
+            footer a {
+                color: #0f7595;
+                margin-left: 0;
+            }
+        </style>
+
+<!--
+Sprite shape dimensions
+====================================================================================================
+You will need to set the sprite shape dimensions via CSS when you use them as stack SVGs, otherwise
+they would become a huge 100% in size. You may use the following dimension classes for doing so.
+They might well be outsourced to an external stylesheet of course.
+-->
+
+<style>
+ .svg-app--images--blog-bg-dims { width: 1627px; height: 369px; }
+ .svg-app--images--decor--blog-bg-left-dims { width: 106px; height: 105px; }
+ .svg-app--images--decor--blog-bg-right-dims { width: 66px; height: 66px; }
+ .svg-app--images--decor--blog-decor-dims { width: 126px; height: 53px; }
+ .svg-app--images--decor--info-after-bg-dims { width: 65px; height: 52px; }
+ .svg-app--images--decor--info-before-bg-dims { width: 120px; height: 121px; }
+ .svg-app--images--decor--pattern-dims { width: 1922px; height: 745px; }
+ .svg-app--images--icons--cart-dims { width: 22px; height: 20px; }
+ .svg-app--images--icons--clock-dims { width: 20px; height: 20px; }
+ .svg-app--images--icons--facebook-f-brands-solid_(1)_(1)-dims { width: 11px; height: 18px; }
+ .svg-app--images--icons--google-brands-solid_(1)-dims { width: 15px; height: 16px; }
+ .svg-app--images--icons--heart-dims { width: 21px; height: 20px; }
+ .svg-app--images--icons--linkedin-in-brands-solid_(1)-dims { width: 14px; height: 16px; }
+ .svg-app--images--icons--pattern-dims { width: 1922px; height: 745px; }
+ .svg-app--images--icons--pinterest-p-brands-solid_(1)-dims { width: 12px; height: 16px; }
+ .svg-app--images--icons--play-btn-dims { width: 130px; height: 130px; }
+ .svg-app--images--icons--search-dims { width: 21px; height: 20px; }
+ .svg-app--images--icons--twitter-brands-solid_(1)-dims { width: 16px; height: 16px; }
+ .svg-app--images--icons--user-dims { width: 20px; height: 20px; }
+ .svg-app--images--icons--user-gray-dims { width: 20px; height: 20px; }
+ .svg-app--images--src--blog-bg-dims { width: 1627px; height: 369px; }
+ .svg-app--images--src--decor--blog-bg-left-dims { width: 106px; height: 105px; }
+ .svg-app--images--src--decor--blog-bg-right-dims { width: 66px; height: 66px; }
+ .svg-app--images--src--decor--blog-decor-dims { width: 126px; height: 53px; }
+ .svg-app--images--src--decor--info-after-bg-dims { width: 65px; height: 52px; }
+ .svg-app--images--src--decor--info-before-bg-dims { width: 120px; height: 121px; }
+ .svg-app--images--src--decor--pattern-dims { width: 1922px; height: 745px; }
+ .svg-app--images--src--icons--cart-dims { width: 22px; height: 20px; }
+ .svg-app--images--src--icons--clock-dims { width: 20px; height: 20px; }
+ .svg-app--images--src--icons--facebook-f-brands-solid_(1)_(1)-dims { width: 11px; height: 18px; }
+ .svg-app--images--src--icons--google-brands-solid_(1)-dims { width: 15px; height: 16px; }
+ .svg-app--images--src--icons--heart-dims { width: 21px; height: 20px; }
+ .svg-app--images--src--icons--linkedin-in-brands-solid_(1)-dims { width: 14px; height: 16px; }
+ .svg-app--images--src--icons--pinterest-p-brands-solid_(1)-dims { width: 12px; height: 16px; }
+ .svg-app--images--src--icons--play-btn-dims { width: 130px; height: 130px; }
+ .svg-app--images--src--icons--search-dims { width: 21px; height: 20px; }
+ .svg-app--images--src--icons--twitter-brands-solid_(1)-dims { width: 16px; height: 16px; }
+ .svg-app--images--src--icons--user-dims { width: 20px; height: 20px; }
+ .svg-app--images--src--icons--user-gray-dims { width: 20px; height: 20px; }
+</style>
+
+<!--
+====================================================================================================
+-->
+
+    </head>
+    <body>
+        <header>
+            <h1>SVG stack preview</h1>
+            <p>This preview features an SVG stack. Please have a look at the HTML source for further details and be aware of the following constraints:</p>
+            <ul>
+                <li>Your browser has to <a href="https://caniuse.com/svg-fragment" target="_blank" rel="noopener noreferrer">support SVG fragment identifiers</a> for SVG stacks to work.</li>
+                <li>Support for SVG fragment identifiers hasn't always been that decent. For older browsers you will have to use some prolyfill like <a href="https://github.com/preciousforever/SVG-Stacker/blob/master/fixsvgstack.jquery.js" target="_blank" rel="noopener noreferrer">fixsvgstack.jquery.js</a>.</li>
+            </ul>
+        </header>
+        <section>
+
+<!--
+SVG stack
+====================================================================================================
+These SVG images make use of fragment identifiers (IDs) to reference certain portions of the
+external sprite. By default, all shapes inside the sprite are hidden by CSS. The `:target` pseudo
+selector is used to show the very shape that is referenced by the fragment identifier.
+-->
+
+            <ul>
+
+             <li title="app--images--blog-bg">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--blog-bg" class="svg-app--images--blog-bg-dims" alt="app--images--blog-bg">
+                    </div>
+                    <h2>app--images--blog-bg, </h2>
+                </li>
+             <li title="app--images--decor--blog-bg-left">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--decor--blog-bg-left" class="svg-app--images--decor--blog-bg-left-dims" alt="app--images--decor--blog-bg-left">
+                    </div>
+                    <h2>app--images--decor--blog-bg-left, </h2>
+                </li>
+             <li title="app--images--decor--blog-bg-right">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--decor--blog-bg-right" class="svg-app--images--decor--blog-bg-right-dims" alt="app--images--decor--blog-bg-right">
+                    </div>
+                    <h2>app--images--decor--blog-bg-right, </h2>
+                </li>
+             <li title="app--images--decor--blog-decor">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--decor--blog-decor" class="svg-app--images--decor--blog-decor-dims" alt="app--images--decor--blog-decor">
+                    </div>
+                    <h2>app--images--decor--blog-decor, </h2>
+                </li>
+             <li title="app--images--decor--info-after-bg">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--decor--info-after-bg" class="svg-app--images--decor--info-after-bg-dims" alt="app--images--decor--info-after-bg">
+                    </div>
+                    <h2>app--images--decor--info-after-bg, </h2>
+                </li>
+             <li title="app--images--decor--info-before-bg">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--decor--info-before-bg" class="svg-app--images--decor--info-before-bg-dims" alt="app--images--decor--info-before-bg">
+                    </div>
+                    <h2>app--images--decor--info-before-bg, </h2>
+                </li>
+             <li title="app--images--decor--pattern">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--decor--pattern" class="svg-app--images--decor--pattern-dims" alt="app--images--decor--pattern">
+                    </div>
+                    <h2>app--images--decor--pattern, </h2>
+                </li>
+             <li title="app--images--icons--cart">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--cart" class="svg-app--images--icons--cart-dims" alt="app--images--icons--cart">
+                    </div>
+                    <h2>app--images--icons--cart, </h2>
+                </li>
+             <li title="app--images--icons--clock">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--clock" class="svg-app--images--icons--clock-dims" alt="app--images--icons--clock">
+                    </div>
+                    <h2>app--images--icons--clock, </h2>
+                </li>
+             <li title="app--images--icons--facebook-f-brands-solid_(1)_(1)">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--facebook-f-brands-solid_(1)_(1)" class="svg-app--images--icons--facebook-f-brands-solid_(1)_(1)-dims" alt="app--images--icons--facebook-f-brands-solid_(1)_(1)">
+                    </div>
+                    <h2>app--images--icons--facebook-f-brands-solid_(1)_(1), </h2>
+                </li>
+             <li title="app--images--icons--google-brands-solid_(1)">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--google-brands-solid_(1)" class="svg-app--images--icons--google-brands-solid_(1)-dims" alt="app--images--icons--google-brands-solid_(1)">
+                    </div>
+                    <h2>app--images--icons--google-brands-solid_(1), </h2>
+                </li>
+             <li title="app--images--icons--heart">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--heart" class="svg-app--images--icons--heart-dims" alt="app--images--icons--heart">
+                    </div>
+                    <h2>app--images--icons--heart, </h2>
+                </li>
+             <li title="app--images--icons--linkedin-in-brands-solid_(1)">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--linkedin-in-brands-solid_(1)" class="svg-app--images--icons--linkedin-in-brands-solid_(1)-dims" alt="app--images--icons--linkedin-in-brands-solid_(1)">
+                    </div>
+                    <h2>app--images--icons--linkedin-in-brands-solid_(1), </h2>
+                </li>
+             <li title="app--images--icons--pattern">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--pattern" class="svg-app--images--icons--pattern-dims" alt="app--images--icons--pattern">
+                    </div>
+                    <h2>app--images--icons--pattern, </h2>
+                </li>
+             <li title="app--images--icons--pinterest-p-brands-solid_(1)">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--pinterest-p-brands-solid_(1)" class="svg-app--images--icons--pinterest-p-brands-solid_(1)-dims" alt="app--images--icons--pinterest-p-brands-solid_(1)">
+                    </div>
+                    <h2>app--images--icons--pinterest-p-brands-solid_(1), </h2>
+                </li>
+             <li title="app--images--icons--play-btn">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--play-btn" class="svg-app--images--icons--play-btn-dims" alt="app--images--icons--play-btn">
+                    </div>
+                    <h2>app--images--icons--play-btn, </h2>
+                </li>
+             <li title="app--images--icons--search">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--search" class="svg-app--images--icons--search-dims" alt="app--images--icons--search">
+                    </div>
+                    <h2>app--images--icons--search, </h2>
+                </li>
+             <li title="app--images--icons--twitter-brands-solid_(1)">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--twitter-brands-solid_(1)" class="svg-app--images--icons--twitter-brands-solid_(1)-dims" alt="app--images--icons--twitter-brands-solid_(1)">
+                    </div>
+                    <h2>app--images--icons--twitter-brands-solid_(1), </h2>
+                </li>
+             <li title="app--images--icons--user">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--user" class="svg-app--images--icons--user-dims" alt="app--images--icons--user">
+                    </div>
+                    <h2>app--images--icons--user, </h2>
+                </li>
+             <li title="app--images--icons--user-gray">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--icons--user-gray" class="svg-app--images--icons--user-gray-dims" alt="app--images--icons--user-gray">
+                    </div>
+                    <h2>app--images--icons--user-gray, </h2>
+                </li>
+             <li title="app--images--src--blog-bg">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--blog-bg" class="svg-app--images--src--blog-bg-dims" alt="app--images--src--blog-bg">
+                    </div>
+                    <h2>app--images--src--blog-bg, </h2>
+                </li>
+             <li title="app--images--src--decor--blog-bg-left">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--decor--blog-bg-left" class="svg-app--images--src--decor--blog-bg-left-dims" alt="app--images--src--decor--blog-bg-left">
+                    </div>
+                    <h2>app--images--src--decor--blog-bg-left, </h2>
+                </li>
+             <li title="app--images--src--decor--blog-bg-right">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--decor--blog-bg-right" class="svg-app--images--src--decor--blog-bg-right-dims" alt="app--images--src--decor--blog-bg-right">
+                    </div>
+                    <h2>app--images--src--decor--blog-bg-right, </h2>
+                </li>
+             <li title="app--images--src--decor--blog-decor">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--decor--blog-decor" class="svg-app--images--src--decor--blog-decor-dims" alt="app--images--src--decor--blog-decor">
+                    </div>
+                    <h2>app--images--src--decor--blog-decor, </h2>
+                </li>
+             <li title="app--images--src--decor--info-after-bg">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--decor--info-after-bg" class="svg-app--images--src--decor--info-after-bg-dims" alt="app--images--src--decor--info-after-bg">
+                    </div>
+                    <h2>app--images--src--decor--info-after-bg, </h2>
+                </li>
+             <li title="app--images--src--decor--info-before-bg">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--decor--info-before-bg" class="svg-app--images--src--decor--info-before-bg-dims" alt="app--images--src--decor--info-before-bg">
+                    </div>
+                    <h2>app--images--src--decor--info-before-bg, </h2>
+                </li>
+             <li title="app--images--src--decor--pattern">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--decor--pattern" class="svg-app--images--src--decor--pattern-dims" alt="app--images--src--decor--pattern">
+                    </div>
+                    <h2>app--images--src--decor--pattern, </h2>
+                </li>
+             <li title="app--images--src--icons--cart">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--cart" class="svg-app--images--src--icons--cart-dims" alt="app--images--src--icons--cart">
+                    </div>
+                    <h2>app--images--src--icons--cart, </h2>
+                </li>
+             <li title="app--images--src--icons--clock">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--clock" class="svg-app--images--src--icons--clock-dims" alt="app--images--src--icons--clock">
+                    </div>
+                    <h2>app--images--src--icons--clock, </h2>
+                </li>
+             <li title="app--images--src--icons--facebook-f-brands-solid_(1)_(1)">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--facebook-f-brands-solid_(1)_(1)" class="svg-app--images--src--icons--facebook-f-brands-solid_(1)_(1)-dims" alt="app--images--src--icons--facebook-f-brands-solid_(1)_(1)">
+                    </div>
+                    <h2>app--images--src--icons--facebook-f-brands-solid_(1)_(1), </h2>
+                </li>
+             <li title="app--images--src--icons--google-brands-solid_(1)">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--google-brands-solid_(1)" class="svg-app--images--src--icons--google-brands-solid_(1)-dims" alt="app--images--src--icons--google-brands-solid_(1)">
+                    </div>
+                    <h2>app--images--src--icons--google-brands-solid_(1), </h2>
+                </li>
+             <li title="app--images--src--icons--heart">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--heart" class="svg-app--images--src--icons--heart-dims" alt="app--images--src--icons--heart">
+                    </div>
+                    <h2>app--images--src--icons--heart, </h2>
+                </li>
+             <li title="app--images--src--icons--linkedin-in-brands-solid_(1)">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--linkedin-in-brands-solid_(1)" class="svg-app--images--src--icons--linkedin-in-brands-solid_(1)-dims" alt="app--images--src--icons--linkedin-in-brands-solid_(1)">
+                    </div>
+                    <h2>app--images--src--icons--linkedin-in-brands-solid_(1), </h2>
+                </li>
+             <li title="app--images--src--icons--pinterest-p-brands-solid_(1)">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--pinterest-p-brands-solid_(1)" class="svg-app--images--src--icons--pinterest-p-brands-solid_(1)-dims" alt="app--images--src--icons--pinterest-p-brands-solid_(1)">
+                    </div>
+                    <h2>app--images--src--icons--pinterest-p-brands-solid_(1), </h2>
+                </li>
+             <li title="app--images--src--icons--play-btn">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--play-btn" class="svg-app--images--src--icons--play-btn-dims" alt="app--images--src--icons--play-btn">
+                    </div>
+                    <h2>app--images--src--icons--play-btn, </h2>
+                </li>
+             <li title="app--images--src--icons--search">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--search" class="svg-app--images--src--icons--search-dims" alt="app--images--src--icons--search">
+                    </div>
+                    <h2>app--images--src--icons--search, </h2>
+                </li>
+             <li title="app--images--src--icons--twitter-brands-solid_(1)">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--twitter-brands-solid_(1)" class="svg-app--images--src--icons--twitter-brands-solid_(1)-dims" alt="app--images--src--icons--twitter-brands-solid_(1)">
+                    </div>
+                    <h2>app--images--src--icons--twitter-brands-solid_(1), </h2>
+                </li>
+             <li title="app--images--src--icons--user">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--user" class="svg-app--images--src--icons--user-dims" alt="app--images--src--icons--user">
+                    </div>
+                    <h2>app--images--src--icons--user, </h2>
+                </li>
+             <li title="app--images--src--icons--user-gray">
+                    <div class="icon-box">
+                        <img src="../sprite.svg#app--images--src--icons--user-gray" class="svg-app--images--src--icons--user-gray-dims" alt="app--images--src--icons--user-gray">
+                    </div>
+                    <h2>app--images--src--icons--user-gray, </h2>
+                </li>
+         </ul>
+
+<!--
+====================================================================================================
+-->
+
+        </section>
+        <footer>
+            <p>Generated at Mon, 22 Jul 2024 13:10:19 GMT by <a href="https://github.com/svg-sprite/svg-sprite" target="_blank" rel="noopener noreferrer">svg-sprite</a>.</p>
+        </footer>
+    </body>
+</html>
